@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:42:38 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/03/20 17:04:52 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:42:02 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	arg_check(char **arg)
 
 int	main(int ac, char **av)
 {
-	t_data	philo;
+	//t_data	philo;
 
 	if (ac == 5 || ac == 6)
 	{

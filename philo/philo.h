@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:31:35 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/03/20 16:03:11 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:47:42 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 typedef struct s_philo
 {
 	t_data	*philo;
+	int		value;
 }	t_philo;
 
 //----------utils-----------
