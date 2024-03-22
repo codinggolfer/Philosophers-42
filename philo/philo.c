@@ -6,11 +6,16 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:42:38 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/03/21 15:42:02 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:43:14 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	add_input(t_data philo, char **arg)
+{
+	
+}
 
 int	arg_check(char **arg)
 {
@@ -30,12 +35,16 @@ int	arg_check(char **arg)
 
 int	main(int ac, char **av)
 {
-	//t_data	philo;
+	t_data	philo;
 
 	if (ac == 5 || ac == 6)
 	{
 		if (arg_check(av) != 0)
 			return (1);
+		add_input(&philo, av); //not done
+		data_init(&philo); //not done yet
+		begin_sim(&philo); //not done
+		clean_table(&philo); // not done
 	}
 	else
 		printf("Wrong amount of arguments\n");
