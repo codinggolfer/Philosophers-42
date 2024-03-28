@@ -6,6 +6,8 @@ RM		=	rm -f
 
 FILES	=	philo.c \
 			utils.c	\
+			safe_mutex.c \
+			init_data.c 
 
 FtoO	=	$(FILES:.c=.o)
 
