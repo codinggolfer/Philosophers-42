@@ -7,7 +7,8 @@ RM		=	rm -f
 FILES	=	philo.c \
 			utils.c	\
 			safe_mutex.c \
-			init_data.c 
+			init_data.c \
+			monitoring.c
 
 FtoO	=	$(FILES:.c=.o)
 

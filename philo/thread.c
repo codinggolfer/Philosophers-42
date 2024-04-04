@@ -6,47 +6,76 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 15:47:33 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/03/22 16:18:35 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:25:37 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-pthread_mutex_t lock;
+# include <stdio.h>
+# include <stdlib.h>
+# include <pthread.h>
+# include <unistd.h>
+// pthread_mutex_t lock;
 
-void	*read_balance(void *balance)
+// void	*read_balance(void *balance)
+// {
+// 	pthread_mutex_lock(&lock);
+// 	printf("argument recieved here: ");
+// 	printf("%i\n", *(int*)balance);
+// 	int *bal = malloc(sizeof(int));
+// 	*bal = *(int*) balance;
+// 	int i = 1;
+
+// 	while (i <= 10)
+// 	{
+// 		*bal += 100;
+// 		printf("100 added to the balance, balance now: %i\n", *bal);
+// 		i++;
+// 	}
+// 	pthread_mutex_unlock(&lock);
+// 	pthread_exit(bal);
+// }
+
+pthread_mutex_t mutex;
+int mails = 0;
+
+void *routine()
 {
-	pthread_mutex_lock(&lock);
-	printf("argument recieved here: ");
-	printf("%i\n", *(int*)balance);
-	int *bal = malloc(sizeof(int));
-	*bal = *(int*) balance;
-	int i = 1;
-
-	while (i <= 10)
-	{
-		*bal += 100;
-		printf("100 added to the balance, balance now: %i\n", *bal);
-		i++;
-	}
-	pthread_mutex_unlock(&lock);
-	pthread_exit(bal);
+	pthread_mutex_lock(&mutex);
+	for (int i = 0; i < 100000000; i++)
+		mails++;
+	pthread_mutex_unlock(&mutex);
+	return(NULL);
 }
-
+// void *routine2()
+// {
+// 	sleep(2);
+// 	printf("theards2 value for x: %d\n", x);
+// 	return(NULL);
+// }
 
 int main(void)
 {
-	int balance = 0;
-	int balance1 = 0; 
-	pthread_t bal;
-	pthread_t bal2;
-	int *new_bal;
-
-	printf("balance at begining: %d\n", balance);
-	pthread_create(&bal, NULL, &read_balance, &balance);
-	pthread_create(&bal2, NULL, &read_balance, &balance1);
-
-	pthread_join(bal, (void *)&new_bal);
-	pthread_join(bal, (void *)&new_bal);
-	printf("balance at the end: %d\n", *new_bal);
+	pthread_t t1[8];
+	pthread_mutex_init(&mutex, NULL);
+	for (int i = 0; i < 8; i++)
+	{
+		if (pthread_create(&t1[i], NULL, &routine, NULL) != 0)
+		{
+			printf("error1");
+			exit(1);
+		}
+		printf("thread process %d has started exec\n", i);
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		if (pthread_join(t1[i], NULL) != 0)
+		{
+			printf("error3");
+			exit(1);
+		}
+		printf("thread process %d has stopped exec\n", i);
+	}
+	pthread_mutex_destroy(&mutex);
+	printf("number of mails in mailbox: %d\n", mails);
 }
 

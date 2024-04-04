@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:42:38 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/03/28 10:41:17 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:39:37 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ int	main(int ac, char **av)
 		if (arg_check(av) != 0)
 			return (1);
 		add_input(&philo, av);
-		data_init(&philo); //not done yet
-		begin_sim(&philo); //not done
+		data_init(&philo);
+		if (!philo.philos || !philo.forks)
+			return (1);
+		table_is_ready(&philo); //not done
 		clean_table(&philo); // not done
 	}
 	else
