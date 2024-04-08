@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 15:47:33 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/04 18:25:37 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:03:40 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,16 @@
 // }
 
 pthread_mutex_t mutex;
-int mails = 0;
 
-void *routine()
+
+void *routine(void *arg)
 {
+	static int index = 0;
+	int *mails = (int *)arg;
+
 	pthread_mutex_lock(&mutex);
-	for (int i = 0; i < 100000000; i++)
-		mails++;
+	printf("thread: %d prints: %d\n", index, mails[index]);
+	index++;
 	pthread_mutex_unlock(&mutex);
 	return(NULL);
 }
@@ -55,27 +58,46 @@ void *routine()
 
 int main(void)
 {
-	pthread_t t1[8];
+	pthread_t t1[6];
+	int mails[6] = {1, 2, 4, 5, 6, 100};
 	pthread_mutex_init(&mutex, NULL);
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 6; i++)
 	{
-		if (pthread_create(&t1[i], NULL, &routine, NULL) != 0)
+		if (pthread_create(&t1[i], NULL, &routine, mails) != 0)
 		{
 			printf("error1");
 			exit(1);
 		}
-		printf("thread process %d has started exec\n", i);
+		//printf("thread process %d has started exec\n", i);
 	}
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		if (pthread_join(t1[i], NULL) != 0)
 		{
 			printf("error3");
 			exit(1);
 		}
-		printf("thread process %d has stopped exec\n", i);
+		//printf("thread process %d has stopped exec\n", i);
 	}
 	pthread_mutex_destroy(&mutex);
-	printf("number of mails in mailbox: %d\n", mails);
+	//printf("pointer address %p\n", mails);
 }
-
+// int main(void)
+// {
+// 	pthread_t t1;
+// 	int *mails;
+// 	pthread_mutex_init(&mutex, NULL);
+// 	if (pthread_create(&t1, NULL, &routine, NULL) != 0)
+// 	{
+// 		printf("error1");
+// 		exit(1);
+// 	}
+// 	if (pthread_join(t1, (void **) &mails) != 0)
+// 	{
+// 		printf("error3");
+// 		exit(1);
+// 	}
+// 	printf("pointer address %p\n", mails);
+// 	printf("number of mails in mailbox: %d\n", *mails);
+// 	free(mails);
+// }

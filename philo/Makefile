@@ -6,9 +6,11 @@ RM		=	rm -f
 
 FILES	=	philo.c \
 			utils.c	\
-			safe_mutex.c \
+			print.c \
 			init_data.c \
-			monitoring.c
+			monitoring.c \
+			dinner.c \
+			routines.c \
 
 FtoO	=	$(FILES:.c=.o)
 
