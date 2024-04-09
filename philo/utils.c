@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:43:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/08 17:44:41 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/09 18:00:55 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ long	ft_atol(const char *str)
 		number *= 10;
 		number += *str++ - '0';
 	}
-	if (number * mp > 2147483647 || number * mp < -2147483648)
-		ft_error("Error");
-	if (number == 0 && mp == -1)
-		ft_error("Error");
+	// if (number * mp > 2147483647 || number * mp < -2147483648)
+	// 	ft_error("Error");
+	// if (number == 0 && mp == -1)
+	// 	ft_error("Error");
 	return (number * mp);
 }
 

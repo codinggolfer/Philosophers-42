@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:40:25 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/08 17:53:19 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/09 19:46:33 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	table_is_ready(t_data *data)
 	int	i;
 
 	i = 0;
-	if (data->nbr_of_meals == 0)
+	if (data->nbr_of_meals == 0 && data->nbr_of_meals)
 		return ;
 	while (i++ < data->nbr_of_philos)
 	{
@@ -30,7 +30,7 @@ void	table_is_ready(t_data *data)
 	data->start = get_current_time();
 	data->threads_ready = true;
 	i = 0;
-	while (i++ < data->philos)
+	while (i++ < data->nbr_of_philos)
 	{
 		if (pthread_join(data->philos[i].thread_id, NULL) != 0)
 		{

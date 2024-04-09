@@ -6,13 +6,13 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 10:29:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/08 17:40:15 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/09 19:43:15 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	init_forks(t_philo *filo, t_data *forks, int philo_pos)
+static void	init_forks(t_philo *filo, t_fork *forks, int philo_pos)
 {
 	int	philo_nbr;
 
@@ -37,7 +37,8 @@ static void	init_philos(t_data *philo)
 		filo = philo->philos + i;
 		filo->id = i + 1;
 		filo->meal_counter = 0;
-		philo->philos = philo;
+		pthread_mutex_init(&filo->philo_mutex, NULL);
+		filo->data = philo;
 		init_forks(filo, philo->forks, i);
 	}
 }
@@ -62,8 +63,8 @@ void	data_init(t_data *philo)
 	philo->threads_ready = false;
 	while (i++ < philo->nbr_of_philos)
 	{
-		pthread_mutex_init(&philo->forks[i].fork, NULL);
-		philo->forks[i].fork_id = i; //for dbugging.
+		if (pthread_mutex_init(&philo->forks[i].fork, NULL) != 0)
+		philo->forks[i].fork_id = i;
 	}
 	init_philos(philo);
 }

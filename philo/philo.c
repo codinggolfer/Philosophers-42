@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:42:38 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/04 16:39:37 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/09 19:44:21 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	main(int ac, char **av)
 			return (1);
 		add_input(&philo, av);
 		data_init(&philo);
-		if (!philo.philos || !philo.forks)
+		if (!(philo.philos) || !(philo.forks))
 			return (1);
 		table_is_ready(&philo); //not done
-		clean_table(&philo); // not done
+		//clean_table(&philo); // not done
 	}
 	else
 		printf("Wrong amount of arguments\n");

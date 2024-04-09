@@ -8,7 +8,6 @@ FILES	=	philo.c \
 			utils.c	\
 			print.c \
 			init_data.c \
-			monitoring.c \
 			dinner.c \
 			routines.c \
 
