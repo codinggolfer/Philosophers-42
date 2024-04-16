@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:42:38 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/09 19:44:21 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:13:42 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	add_input(t_data *philo, char **arg)
 {
 	philo->nbr_of_philos = ft_atol(arg[1]);
-	philo->time_to_die = ft_atol(arg[2]) * 1000;
-	philo->eat = ft_atol(arg[3]) * 1000;
-	philo->sleep = ft_atol(arg[4]) * 1000;
+	philo->time_to_die = ft_atol(arg[2]);
+	philo->eat = ft_atol(arg[3]);
+	philo->sleep = ft_atol(arg[4]);
 	if (arg[5])
 		philo->nbr_of_meals = ft_atol(arg[5]);
 }

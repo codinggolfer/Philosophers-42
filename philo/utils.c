@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:43:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/09 18:00:55 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:55:52 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ int	ft_usleep(size_t milliseconds)
 
 void	wait_all(t_data *data)
 {
-	while (data->threads_ready != true)
-		;
+	pthread_mutex_lock(&data->data_mutex);
+	data->philos->philo_threads += 1;
+	pthread_mutex_unlock(&data->data_mutex);
+	while (1)
+	{
+		if (data->threads_ready == true)
+			break ;
+	}
 }

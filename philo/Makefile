@@ -10,6 +10,7 @@ FILES	=	philo.c \
 			init_data.c \
 			dinner.c \
 			routines.c \
+			monitoring.c \
 
 FtoO	=	$(FILES:.c=.o)
 
