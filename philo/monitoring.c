@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:05:10 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/16 17:12:46 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/16 18:02:04 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,7 @@ void	*monitor(void *arg)
 	int		i;
 
 	moni = (t_data *) arg;
-	while (moni->philos->philo_threads <= moni->nbr_of_philos)
-	{
-		if (moni->philos->philo_threads == moni->nbr_of_philos)
-			break ;
-	}
+	wait_all(moni);
 	while (!sim_finished(moni))
 	{
 		i = 0;
