@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:43:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/16 18:04:49 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:45:07 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ size_t	get_current_time(void)
 	struct timeval	time;
 
 	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
+		printf("gettimeofday() error\n");
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
@@ -76,7 +76,14 @@ void	wait_all(t_data *data)
 {
 	while (1)
 	{
+		pthread_mutex_lock(&data->philos->philo_mutex);
 		if (data->threads_ready == true)
+		{
+			pthread_mutex_unlock(&data->philos->philo_mutex);
 			break ;
+		}
 	}
+	pthread_mutex_lock(&data->philos->philo_mutex);
+	data->philos->philo_threads++;
+	pthread_mutex_unlock(&data->philos->philo_mutex);
 }

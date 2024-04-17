@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:05:10 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/16 18:02:04 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:31:48 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 int	sim_finished(t_data *moni)
 {
+	if (moni->full == 1)
+		return (0);
+	pthread_mutex_lock(&moni->data_mutex);
 	if (moni->dead == 1)
+	{
+		pthread_mutex_unlock(&moni->data_mutex);
 		return (1);
+	}
+	pthread_mutex_unlock(&moni->data_mutex);
 	return (0);
 }
 
@@ -37,7 +44,13 @@ void	*monitor(void *arg)
 	int		i;
 
 	moni = (t_data *) arg;
-	wait_all(moni);
+	while (1)
+	{
+		pthread_mutex_lock(&moni->philos->philo_mutex);
+		if (moni->philos->philo_threads == moni->nbr_of_philos)
+			break ;
+		pthread_mutex_lock(&moni->philos->philo_mutex);
+	}
 	while (!sim_finished(moni))
 	{
 		i = 0;
@@ -50,7 +63,7 @@ void	*monitor(void *arg)
 			}
 			i++;
 		}
-		if (moni->threads_ready == true)
+		if (moni->full == 1)
 			break ;
 	}
 	return (NULL);

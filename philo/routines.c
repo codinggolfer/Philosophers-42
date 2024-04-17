@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:09:21 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/16 17:23:07 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:43:34 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ void	*main_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_all(philo->data);
+	philo->last_meal_time = get_current_time();
 	if (philo->id % 2 == 0)
 		thinking(philo);
-	while (!sim_finished(philo->data))
+	while (sim_finished(philo->data) != 1)
 	{
 		eating(philo);
 		if (philo->data->nbr_of_meals == philo->meal_counter
@@ -53,6 +54,6 @@ void	*main_routine(void *arg)
 		ft_usleep(philo->data->sleep);
 		thinking(philo);
 	}
-	//philo->data->threads_ready = true;
+	//philo->data->full = 1;
 	return (NULL);
 }
