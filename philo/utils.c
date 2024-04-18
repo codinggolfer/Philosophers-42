@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:43:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/17 16:45:07 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:11:54 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	wait_all(t_data *data)
 			pthread_mutex_unlock(&data->philos->philo_mutex);
 			break ;
 		}
+		pthread_mutex_unlock(&data->philos->philo_mutex);
 	}
 	pthread_mutex_lock(&data->philos->philo_mutex);
 	data->philos->philo_threads++;

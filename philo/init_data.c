@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 10:29:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/17 16:43:04 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:46:24 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	data_init(t_data *philo)
 	if (pthread_mutex_init(&philo->data_mutex, NULL) != 0)
 		return ;
 	if (pthread_mutex_init(&philo->print_mutex, NULL) != 0)
+		return ;
+	if (pthread_mutex_init(&philo->time_mutex, NULL) != 0)
 		return ;
 	init_philos(philo->philos, philo);
 }

@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:31:35 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/17 16:40:15 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:45:58 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ struct s_data
 	t_philos_ready	threads_ready;
 	t_mtx			data_mutex;
 	t_mtx			print_mutex;
+	t_mtx			time_mutex;
 	t_fork			*forks;
 	t_philo			*philos;
 
