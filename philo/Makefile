@@ -11,6 +11,7 @@ FILES	=	philo.c \
 			dinner.c \
 			routines.c \
 			monitoring.c \
+			safe_utils.c \
 
 FtoO	=	$(FILES:.c=.o)
 

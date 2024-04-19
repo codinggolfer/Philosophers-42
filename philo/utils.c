@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:43:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/18 17:11:54 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:56:10 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	check_digit(char *str)
 	return (0);
 }
 
-size_t	get_current_time(void)
+size_t	get_exact_time(void)
 {
 	struct timeval	time;
 
@@ -66,8 +66,8 @@ int	ft_usleep(size_t milliseconds)
 {
 	size_t	start;
 
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
+	start = get_exact_time();
+	while ((get_exact_time() - start) < milliseconds)
 		usleep(500);
 	return (0);
 }
@@ -76,15 +76,15 @@ void	wait_all(t_data *data)
 {
 	while (1)
 	{
-		pthread_mutex_lock(&data->philos->philo_mutex);
+		locker(&data->philos->philo_mutex);
 		if (data->threads_ready == true)
 		{
-			pthread_mutex_unlock(&data->philos->philo_mutex);
+			unlocker(&data->philos->philo_mutex);
 			break ;
 		}
-		pthread_mutex_unlock(&data->philos->philo_mutex);
+		unlocker(&data->philos->philo_mutex);
 	}
-	pthread_mutex_lock(&data->philos->philo_mutex);
+	locker(&data->philos->philo_mutex);
 	data->philos->philo_threads++;
-	pthread_mutex_unlock(&data->philos->philo_mutex);
+	unlocker(&data->philos->philo_mutex);
 }

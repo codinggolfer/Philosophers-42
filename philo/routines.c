@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:09:21 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/18 18:33:58 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:39:06 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,16 @@ static void	thinking(t_philo *philo)
   release th forks in the end*/
 static void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->first_fork->fork);
+	locker(&philo->first_fork->fork);
 	print_status(TAKE_F_FORK, philo);
-	pthread_mutex_lock(&philo->second_fork->fork);
+	locker(&philo->second_fork->fork);
 	print_status(TAKE_S_FORK, philo);
-	pthread_mutex_lock(&philo->data->time_mutex);
-	philo->last_meal_time = get_current_time();
-	pthread_mutex_unlock(&philo->data->time_mutex);
+	set_value(&philo->data->time_mutex, &philo->last_meal_time, get_exact_time());
 	philo->meal_counter++;
 	print_status(EATING, philo);
 	ft_usleep(philo->data->eat);
-	pthread_mutex_unlock(&philo->first_fork->fork);
-	pthread_mutex_unlock(&philo->second_fork->fork);
+	unlocker(&philo->first_fork->fork);
+	unlocker(&philo->second_fork->fork);
 }
 
 void	*main_routine(void *arg)
@@ -43,9 +41,7 @@ void	*main_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_all(philo->data);
-	pthread_mutex_lock(&philo->data->time_mutex);
-	philo->last_meal_time = get_current_time();
-	pthread_mutex_unlock(&philo->data->time_mutex);
+	set_value(&philo->data->time_mutex, &philo->last_meal_time, get_exact_time());
 	if (philo->id % 2 == 0)
 		thinking(philo);
 	while (1)

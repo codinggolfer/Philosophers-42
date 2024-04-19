@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:05:10 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/18 18:36:09 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/19 12:53:52 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,36 @@ static int	philo_died(t_philo *philo)
 {
 	long	passed;
 
-	pthread_mutex_lock(&philo->data->time_mutex);
-	passed = get_current_time();
-	pthread_mutex_lock(&philo->data->data_mutex);
+	set_value(&philo->data->time_mutex, &passed, get_exact_time());
+	locker(&philo->data->data_mutex);
 	if (philo->data->full == 1)
 	{
-		pthread_mutex_unlock(&philo->data->data_mutex);
-		pthread_mutex_unlock(&philo->data->time_mutex);
+		unlocker(&philo->data->data_mutex);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->data->data_mutex);
-	pthread_mutex_unlock(&philo->philo_mutex);
+	unlocker(&philo->data->data_mutex);
+	locker(&philo->data->time_mutex);
 	if (passed - philo->last_meal_time >= philo->data->time_to_die)
 	{
-		pthread_mutex_unlock(&philo->data->time_mutex);
+		unlocker(&philo->data->time_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->data->time_mutex);
+	unlocker(&philo->data->time_mutex);
 	return (0);
+}
+
+static void	monitor_ready_to_go(t_data *moni)
+{
+	while (1)
+	{
+		locker(&moni->philos->philo_mutex);
+		if (moni->philos->philo_threads == moni->nbr_of_philos)
+		{
+			unlocker(&moni->philos->philo_mutex);
+			break ;
+		}
+		unlocker(&moni->philos->philo_mutex);
+	}
 }
 
 void	*monitor(void *arg)
@@ -59,16 +71,7 @@ void	*monitor(void *arg)
 	int		i;
 
 	moni = (t_data *) arg;
-	while (1)
-	{
-		pthread_mutex_lock(&moni->philos->philo_mutex);
-		if (moni->philos->philo_threads == moni->nbr_of_philos)
-		{
-			pthread_mutex_unlock(&moni->philos->philo_mutex);
-			break ;
-		}
-		pthread_mutex_unlock(&moni->philos->philo_mutex);
-	}
+	monitor_ready_to_go(moni);
 	while (!sim_finished(moni))
 	{
 		i = 0;
@@ -77,19 +80,12 @@ void	*monitor(void *arg)
 			if (philo_died(moni->philos + i) == 1)
 			{
 				print_status(DIED, moni->philos + i);
-				pthread_mutex_lock(&moni->data_mutex);
-				moni->dead = 1;
-				pthread_mutex_unlock(&moni->data_mutex);
+				set_value(&moni->data_mutex, &moni->dead, 1);
 			}
 			i++;
 		}
-		pthread_mutex_lock(&moni->data_mutex);
-		if (moni->full == 1)
-		{
-			pthread_mutex_unlock(&moni->data_mutex);
+		if (check_available(&moni->data_mutex, moni->full) == 1)
 			break ;
-		}
-		pthread_mutex_unlock(&moni->data_mutex);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:31:35 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/18 16:45:58 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:37:16 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ typedef enum e_philos_ready
 	true,
 	false,
 }	t_philos_ready;
+
+/*---mutex state---*/
+typedef enum e_state
+{
+	PHILO,
+	TIME,
+	DATA,
+	PRINT,
+	FORK,
+}	t_state;
 
 /*philo status*/
 typedef enum e_status
@@ -68,14 +78,14 @@ typedef struct s_philo
 /* carries the input */
 struct s_data
 {
-	int				dead;
+	long			dead;
 	int				nbr_of_philos;
 	long			time_to_die;
 	size_t			sleep;
 	int				nbr_of_meals;
 	long			start;
 	long			eat;
-	int				full;
+	long			full;
 	t_philos_ready	threads_ready;
 	t_mtx			data_mutex;
 	t_mtx			print_mutex;
@@ -94,7 +104,7 @@ void	print_status(t_status status, t_philo *philo);
 
 
 /*-----Usleep handmade*------*/
-size_t	get_current_time(void);
+size_t	get_exact_time(void);
 int		ft_usleep(size_t milliseconds);
 
 /*----routine-----*/
@@ -107,5 +117,11 @@ void	table_is_ready(t_data *data);
 /*----monitor-----*/
 void	*monitor(void *arg);
 int		sim_finished(t_data *moni);
+
+/*---mutex---*/
+void	set_value(t_mtx *mutex, long *value, long time);
+void	locker(t_mtx *mutex);
+void	unlocker(t_mtx *mutex);
+int		check_available(t_mtx *mutex, long value);
 
 #endif
