@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 16:40:25 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/19 13:47:31 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:15:35 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	create_thread(t_data *data)
 	return (1);
 }
 
-static	int	join_threads(t_data *data)
+int	join_threads(t_data *data)
 {
 	int	i;
 
@@ -55,6 +55,11 @@ void	table_is_ready(t_data *data)
 	i = 0;
 	if (data->nbr_of_meals == 0 && data->nbr_of_meals)
 		return ;
+	if (data->nbr_of_philos == 1)
+	{
+		lone_philo(data->philos);
+		return ;
+	}
 	if (!create_thread(data))
 		return ;
 	if (pthread_create(&moni, NULL, &monitor, data) != 0)

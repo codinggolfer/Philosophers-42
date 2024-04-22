@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:31:35 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/19 13:37:16 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:15:44 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,14 @@ void	*main_routine(void *arg);
 
 /*----THREAD-------*/
 void	table_is_ready(t_data *data);
+int	join_threads(t_data *data);
 
 /*----monitor-----*/
 void	*monitor(void *arg);
 int		sim_finished(t_data *moni);
+
+/*---lone philo-----*/
+void	lone_philo(t_philo *philo);
 
 /*---mutex---*/
 void	set_value(t_mtx *mutex, long *value, long time);

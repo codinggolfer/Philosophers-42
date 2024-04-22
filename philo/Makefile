@@ -1,7 +1,7 @@
 NAME	=	philo
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror #-fsanitize=thread
+CFLAGS	=	-Wall -Wextra -Werror -fsanitize=thread
 RM		=	rm -f
 
 FILES	=	philo.c \
@@ -12,6 +12,7 @@ FILES	=	philo.c \
 			routines.c \
 			monitoring.c \
 			safe_utils.c \
+			lone_philo.c \
 
 FtoO	=	$(FILES:.c=.o)
 
