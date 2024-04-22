@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:46:52 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/22 15:36:12 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:21:06 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ void	lone_philo(t_philo *philo)
 	if (!join_threads(philo->data))
 		return ;
 	pthread_join(moni, NULL);
-
+	
 }

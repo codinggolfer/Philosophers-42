@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:31:35 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/22 15:15:44 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:39:38 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,8 @@ void	set_value(t_mtx *mutex, long *value, long time);
 void	locker(t_mtx *mutex);
 void	unlocker(t_mtx *mutex);
 int		check_available(t_mtx *mutex, long value);
+
+/*----FREE----*/
+void	free_all(t_data *data);
 
 #endif
