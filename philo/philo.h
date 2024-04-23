@@ -56,14 +56,12 @@ typedef enum e_status
 typedef struct s_fork
 {
 	t_mtx	fork;
-	int		fork_id;
 }	t_fork;
 
 /*for threading and philoshit*/
 typedef struct s_philo
 {
 	int			id;
-	id_t		i;
 	long		last_meal_time; //time from last meal
 	t_fork		*first_fork; //right fork
 	t_fork		*second_fork; //left fork
@@ -113,7 +111,7 @@ void	*main_routine(void *arg);
 
 /*----THREAD-------*/
 void	table_is_ready(t_data *data);
-int	join_threads(t_data *data);
+int		join_threads(t_data *data);
 
 /*----monitor-----*/
 void	*monitor(void *arg);

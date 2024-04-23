@@ -16,8 +16,8 @@ static int	create_thread(t_data *data, pthread_t moni)
 {
 	int			i;
 
-	i = 0;
-	while (i < data->nbr_of_philos)
+	i = -1;
+	while (++i < data->nbr_of_philos)
 	{
 		if (pthread_create(&data->philos[i].thread_id, NULL, &main_routine,
 				&data->philos[i]) != 0)
@@ -27,11 +27,11 @@ static int	create_thread(t_data *data, pthread_t moni)
 			printf("pthread_create Error");
 			return (0);
 		}
-		i++;
 	}
 	if (pthread_create(&moni, NULL, &monitor, data) != 0)
 	{
 		printf("pthread_create Error for monitor");
+		join_threads(data);
 		return (0);
 	}
 	return (1);

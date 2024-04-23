@@ -49,7 +49,9 @@ int	main(int ac, char **av)
 		add_input(&philo, av);
 		data_init(&philo);
 		if (!(philo.philos) || !(philo.forks))
+		{
 			return (1);
+		}
 		table_is_ready(&philo);
 		free_all(&philo);
 	}

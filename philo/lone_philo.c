@@ -42,12 +42,12 @@ void	lone_philo(t_philo *philo)
 
 	if (pthread_create(&philo[0].thread_id, NULL, lone_routine, &philo[0]) != 0)
 	{
-			/*error stuff here return and destroy mlx*/
+			write (2, "error in lone philo create\n", 28);
 			return ;
 	}
 	if (pthread_create(&moni, NULL, monitor, philo->data) != 0)
 	{
-			/*error stuff here return and destroy mlx*/
+			write (2, "error in lone monitor create\n", 30);
 			return ;
 	}
 	philo->data->start = get_exact_time();

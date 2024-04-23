@@ -32,10 +32,6 @@ long	ft_atol(const char *str)
 		number *= 10;
 		number += *str++ - '0';
 	}
-	// if (number * mp > 2147483647 || number * mp < -2147483648)
-	// 	ft_error("Error");
-	// if (number == 0 && mp == -1)
-	// 	ft_error("Error");
 	return (number * mp);
 }
 

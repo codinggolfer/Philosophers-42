@@ -14,18 +14,18 @@
 
 int	sim_finished(t_data *moni)
 {
-	pthread_mutex_lock(&moni->data_mutex);
+	locker(&moni->data_mutex);
 	if (moni->full == 1)
 	{
-		pthread_mutex_unlock(&moni->data_mutex);
+		unlocker(&moni->data_mutex);
 		return (0);
 	}
 	if (moni->dead == 1)
 	{
-		pthread_mutex_unlock(&moni->data_mutex);
+		unlocker(&moni->data_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&moni->data_mutex);
+	unlocker(&moni->data_mutex);
 	return (0);
 }
 

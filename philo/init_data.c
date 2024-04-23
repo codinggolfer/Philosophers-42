@@ -12,6 +12,12 @@
 
 #include "philo.h"
 
+static void	free_init(t_data *philo)
+{
+	free (philo->forks);
+	free (philo->philos);
+}
+
 static void	init_forks(t_philo *filo, t_fork *forks, int philo_pos)
 {
 	int	philo_nbr;
@@ -42,12 +48,16 @@ static void	init_philos(t_philo *filo, t_data *philo)
 		filo->data = philo;
 		if (pthread_mutex_init(&filo->philo_mutex, NULL) != 0)
 		{
-			//error handle
+
 			return ;
 		}
 		init_forks(filo, philo->forks, i);
 		i++;
 	}
+	if (pthread_mutex_init(&philo->data_mutex, NULL) != 0 ||
+	 	pthread_mutex_init(&philo->print_mutex, NULL) != 0 ||
+		pthread_mutex_init(&philo->time_mutex, NULL) != 0)
+		free_init(philo);
 }
 
 void	data_init(t_data *philo)
@@ -65,19 +75,15 @@ void	data_init(t_data *philo)
 	if (!philo->forks)
 	{
 		printf("malloc error\n");
+		free (philo->philos);
 		return ;
 	}
 	while (++i < philo->nbr_of_philos)
-	{
 		if (pthread_mutex_init(&philo->forks[i].fork, NULL) != 0)
+		{
+			free (philo->forks);
+			free (philo->philos);
 			return ;
-		philo->forks[i].fork_id = i;
-	}
-	if (pthread_mutex_init(&philo->data_mutex, NULL) != 0)
-		return ;
-	if (pthread_mutex_init(&philo->print_mutex, NULL) != 0)
-		return ;
-	if (pthread_mutex_init(&philo->time_mutex, NULL) != 0)
-		return ;
+		}
 	init_philos(philo->philos, philo);
 }
