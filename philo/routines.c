@@ -6,15 +6,30 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:09:21 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/22 14:24:13 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:51:43 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+
 static void	thinking(t_philo *philo)
 {
 	print_status(THINKING, philo);
+}
+
+static void	de_sync_philos(t_philo *philo)
+{
+	if (philo->data->nbr_of_philos % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			ft_usleep(30);
+	}
+	else
+	{
+		if (philo->id % 2)
+			thinking(philo);
+	}
 }
 
 static void	eating(t_philo *philo)
@@ -39,9 +54,10 @@ void	*main_routine(void *arg)
 	philo = (t_philo *)arg;
 	wait_all(philo->data);
 	set_value(&philo->data->time_mutex,
-	 	&philo->last_meal_time, get_exact_time());
-	if (philo->id % 2 == 0)
-		thinking(philo);
+		&philo->last_meal_time, get_exact_time());
+	// if (philo->id % 2 == 0)
+	// 	thinking(philo);
+	de_sync_philos(philo);
 	while (1)
 	{
 		eating(philo);
