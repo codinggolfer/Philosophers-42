@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 10:29:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/22 17:21:58 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:48:11 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	init_philos(t_philo *filo, t_data *philo)
 	i = 0;
 	philo->full = 0;
 	philo->threads_ready = false;
+	philo->detach = 0;
 	while (i < philo->nbr_of_philos)
 	{
 		filo = philo->philos + i;
@@ -48,14 +49,13 @@ static void	init_philos(t_philo *filo, t_data *philo)
 		filo->data = philo;
 		if (pthread_mutex_init(&filo->philo_mutex, NULL) != 0)
 		{
-
 			return ;
 		}
 		init_forks(filo, philo->forks, i);
 		i++;
 	}
-	if (pthread_mutex_init(&philo->data_mutex, NULL) != 0 ||
-	 	pthread_mutex_init(&philo->print_mutex, NULL) != 0 ||
+	if (pthread_mutex_init(&philo->data_mutex, NULL) != 0 || \
+		pthread_mutex_init(&philo->print_mutex, NULL) != 0 || \
 		pthread_mutex_init(&philo->time_mutex, NULL) != 0)
 		free_init(philo);
 }
@@ -75,15 +75,16 @@ void	data_init(t_data *philo)
 	if (!philo->forks)
 	{
 		printf("malloc error\n");
-		free (philo->philos);
 		return ;
 	}
 	while (++i < philo->nbr_of_philos)
+	{
 		if (pthread_mutex_init(&philo->forks[i].fork, NULL) != 0)
 		{
 			free (philo->forks);
 			free (philo->philos);
 			return ;
 		}
+	}
 	init_philos(philo->philos, philo);
 }

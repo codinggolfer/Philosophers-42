@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:05:10 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/22 15:23:29 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:53:03 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@ static int	philo_died(t_philo *philo)
 
 	set_value(&philo->data->time_mutex, &passed, get_exact_time());
 	locker(&philo->data->data_mutex);
-	if (philo->data->full == 1)
+	if (philo->meal_counter == philo->data->nbr_of_meals
+		&& philo->data->nbr_of_meals)
 	{
 		unlocker(&philo->data->data_mutex);
 		return (0);
 	}
 	unlocker(&philo->data->data_mutex);
 	locker(&philo->data->time_mutex);
-	if (passed - philo->last_meal_time >= philo->data->time_to_die)
+	if (passed - philo->last_meal_time > philo->data->time_to_die)
 	{
 		unlocker(&philo->data->time_mutex);
 		return (1);
@@ -75,9 +76,11 @@ void	*monitor(void *arg)
 	while (!sim_finished(moni))
 	{
 		i = 0;
+		if (moni->detach == 1)
+			return (NULL);
 		while (i < moni->nbr_of_philos && !sim_finished(moni))
 		{
-			if (philo_died(moni->philos + i) == 1)
+			if (philo_died(moni->philos + i) == 1 && moni->detach != 1)
 			{
 				print_status(DIED, moni->philos + i);
 				set_value(&moni->data_mutex, &moni->dead, 1);

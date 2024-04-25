@@ -6,12 +6,11 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:09:21 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/24 14:51:43 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:46:25 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 static void	thinking(t_philo *philo)
 {
@@ -40,7 +39,9 @@ static void	eating(t_philo *philo)
 	print_status(TAKE_S_FORK, philo);
 	set_value(&philo->data->time_mutex,
 		&philo->last_meal_time, get_exact_time());
+	locker(&philo->data->data_mutex);
 	philo->meal_counter++;
+	unlocker(&philo->data->data_mutex);
 	print_status(EATING, philo);
 	ft_usleep(philo->data->eat);
 	unlocker(&philo->first_fork->fork);
@@ -55,8 +56,6 @@ void	*main_routine(void *arg)
 	wait_all(philo->data);
 	set_value(&philo->data->time_mutex,
 		&philo->last_meal_time, get_exact_time());
-	// if (philo->id % 2 == 0)
-	// 	thinking(philo);
 	de_sync_philos(philo);
 	while (1)
 	{
@@ -68,6 +67,8 @@ void	*main_routine(void *arg)
 			unlocker(&philo->data->data_mutex);
 			break ;
 		}
+		if (philo->data->detach == 1)
+			pthread_detach(philo->thread_id);
 		unlocker(&philo->data->data_mutex);
 		print_status(SLEEPING, philo);
 		ft_usleep(philo->data->sleep);

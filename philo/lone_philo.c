@@ -6,12 +6,11 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:46:52 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/22 16:21:06 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:09:01 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 static void	*lone_routine(void *loner)
 {
@@ -19,7 +18,8 @@ static void	*lone_routine(void *loner)
 
 	philo = (t_philo *)loner;
 	wait_all(philo->data);
-	set_value(&philo->data->time_mutex, &philo->last_meal_time, get_exact_time());
+	set_value(&philo->data->time_mutex,
+		&philo->last_meal_time, get_exact_time());
 	locker(&philo->first_fork->fork);
 	print_status(TAKE_F_FORK, philo);
 	while (1)
@@ -42,13 +42,13 @@ void	lone_philo(t_philo *philo)
 
 	if (pthread_create(&philo[0].thread_id, NULL, lone_routine, &philo[0]) != 0)
 	{
-			write (2, "error in lone philo create\n", 28);
-			return ;
+		write (2, "error in lone philo create\n", 28);
+		return ;
 	}
 	if (pthread_create(&moni, NULL, monitor, philo->data) != 0)
 	{
-			write (2, "error in lone monitor create\n", 30);
-			return ;
+		write (2, "error in lone monitor create\n", 30);
+		return ;
 	}
 	philo->data->start = get_exact_time();
 	locker(&philo->philo_mutex);
@@ -57,5 +57,4 @@ void	lone_philo(t_philo *philo)
 	if (!join_threads(philo->data))
 		return ;
 	pthread_join(moni, NULL);
-	
 }
