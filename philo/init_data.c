@@ -6,85 +6,104 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 10:29:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/25 13:48:11 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:37:00 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	free_init(t_data *philo)
+static void	free_init(t_data *data)
 {
-	free (philo->forks);
-	free (philo->philos);
+	data->fail = 1;
+	free (data->forks);
+	free (data->philos);
 }
 
-static void	init_forks(t_philo *filo, t_fork *forks, int philo_pos)
-{
-	int	philo_nbr;
-
-	philo_nbr = filo->data->nbr_of_philos;
-	filo->first_fork = &forks[(philo_pos + 1) % philo_nbr];
-	filo->second_fork = &forks[philo_pos];
-	if (filo->id % 2 == 0)
-	{
-		filo->first_fork = &forks[philo_pos];
-		filo->second_fork = &forks[(philo_pos + 1) % philo_nbr];
-	}
-}
-
-static void	init_philos(t_philo *filo, t_data *philo)
-{
-	int	i;
-
-	i = 0;
-	philo->full = 0;
-	philo->threads_ready = false;
-	philo->detach = 0;
-	while (i < philo->nbr_of_philos)
-	{
-		filo = philo->philos + i;
-		filo->id = i + 1;
-		filo->meal_counter = 0;
-		filo->philo_threads = 0;
-		filo->data = philo;
-		if (pthread_mutex_init(&filo->philo_mutex, NULL) != 0)
-		{
-			return ;
-		}
-		init_forks(filo, philo->forks, i);
-		i++;
-	}
-	if (pthread_mutex_init(&philo->data_mutex, NULL) != 0 || \
-		pthread_mutex_init(&philo->print_mutex, NULL) != 0 || \
-		pthread_mutex_init(&philo->time_mutex, NULL) != 0)
-		free_init(philo);
-}
-
-void	data_init(t_data *philo)
+static void	init_mutex(t_data *data)
 {
 	int	i;
 
 	i = -1;
-	philo->philos = malloc(sizeof(t_philo) * philo->nbr_of_philos);
-	if (!philo->philos)
+	data->fail = 0;
+	while (++i < data->nbr_of_philos)
 	{
-		printf("malloc error\n");
-		return ;
-	}
-	philo->forks = malloc(sizeof(t_fork) * philo->nbr_of_philos);
-	if (!philo->forks)
-	{
-		printf("malloc error\n");
-		return ;
-	}
-	while (++i < philo->nbr_of_philos)
-	{
-		if (pthread_mutex_init(&philo->forks[i].fork, NULL) != 0)
+		if (pthread_mutex_init(&data->forks[i].fork, NULL) != 0)
 		{
-			free (philo->forks);
-			free (philo->philos);
+			while (--i)
+				pthread_mutex_destroy(&data->forks[i].fork);
+			free_init(data);
 			return ;
 		}
 	}
-	init_philos(philo->philos, philo);
+	if (pthread_mutex_init(&data->data_mutex, NULL) != 0)
+		free_init(data);
+	if (data->fail == 1 || pthread_mutex_init(&data->print_mutex, NULL) != 0)
+		return ;
+	if (data->fail == 1 || pthread_mutex_init(&data->time_mutex, NULL) != 0)
+		return ;
+	if (data->fail == 1 || pthread_mutex_init(&data->philo_mutex, NULL) != 0)
+		return ;
+}
+
+static void	init_forks(t_philo *philo, t_fork *forks, int philo_pos)
+{
+	int	philo_nbr;
+
+	philo_nbr = philo->data->nbr_of_philos;
+	philo->first_fork = &forks[(philo_pos + 1) % philo_nbr];
+	philo->second_fork = &forks[philo_pos];
+	if (philo->id % 2 == 0)
+	{
+		philo->first_fork = &forks[philo_pos];
+		philo->second_fork = &forks[(philo_pos + 1) % philo_nbr];
+	}
+}
+
+static void	init_philos(t_philo *philo, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->full = 0;
+	data->threads_ready = false;
+	while (i < data->nbr_of_philos)
+	{
+		philo = data->philos + i;
+		philo->id = i + 1;
+		philo->meal_counter = 0;
+		philo->philo_threads = 0;
+		philo->data = data;
+		init_forks(philo, data->forks, i);
+		i++;
+	}
+}
+
+void	data_init(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	data->philos = malloc(sizeof(t_philo) * data->nbr_of_philos);
+	if (!data->philos)
+	{
+		printf("malloc error\n");
+		return ;
+	}
+	data->forks = malloc(sizeof(t_fork) * data->nbr_of_philos);
+	if (!data->forks)
+	{
+		printf("malloc error\n");
+		return ;
+	}
+	while (++i < data->nbr_of_philos)
+	// {
+	// 	if (pthread_mutex_init(&data->forks[i].fork, NULL) != 0)
+	// 	{
+	// 		free (data->forks);
+	// 		free (data->philos);
+	// 		return ;
+	// 	}
+	// }
+	init_mutex(data);
+	init_philos(data->philos, data);
 }

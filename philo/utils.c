@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:43:03 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/19 13:56:10 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:33:34 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,16 @@ void	wait_all(t_data *data)
 {
 	while (1)
 	{
-		locker(&data->philos->philo_mutex);
+		locker(&data->philo_mutex);
 		if (data->threads_ready == true)
 		{
-			unlocker(&data->philos->philo_mutex);
+			unlocker(&data->philo_mutex);
 			break ;
 		}
-		unlocker(&data->philos->philo_mutex);
+		unlocker(&data->philo_mutex);
 	}
-	locker(&data->philos->philo_mutex);
+	locker(&data->philo_mutex);
 	data->philos->philo_threads++;
-	unlocker(&data->philos->philo_mutex);
+	unlocker(&data->philo_mutex);
 }
+

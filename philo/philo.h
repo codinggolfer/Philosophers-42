@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:31:35 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/25 13:46:12 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:04:47 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ typedef enum e_philos_ready
 	false,
 }	t_philos_ready;
 
-typedef enum e_state
-{
-	PHILO,
-	TIME,
-	DATA,
-	PRINT,
-	FORK,
-}	t_state;
-
 typedef enum e_status
 {
 	EATING,
@@ -62,16 +53,15 @@ typedef struct s_philo
 	t_fork		*first_fork;
 	t_fork		*second_fork;
 	pthread_t	thread_id;
-	t_mtx		philo_mutex;
 	int			meal_counter;
 	int			philo_threads;	
 	t_data		*data;
-	t_mtx		*meal_lock;
 }	t_philo;
 
 struct s_data
 {
 	long			dead;
+	int				fail;
 	int				detach;
 	int				nbr_of_philos;
 	long			time_to_die;
@@ -81,6 +71,7 @@ struct s_data
 	long			eat;
 	long			full;
 	t_philos_ready	threads_ready;
+	t_mtx			philo_mutex;
 	t_mtx			data_mutex;
 	t_mtx			print_mutex;
 	t_mtx			time_mutex;

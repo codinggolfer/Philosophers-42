@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 16:32:18 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/25 13:54:30 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:28:04 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_all(t_data *data)
 		pthread_mutex_destroy(&data->forks[i].fork);
 		i++;
 	}
-	pthread_mutex_destroy(&data->philos->philo_mutex);
+	pthread_mutex_destroy(&data->philo_mutex);
 	pthread_mutex_destroy(&data->time_mutex);
 	pthread_mutex_destroy(&data->data_mutex);
 	free (data->philos);

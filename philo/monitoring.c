@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 15:05:10 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/25 13:53:03 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:37:11 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ static void	monitor_ready_to_go(t_data *moni)
 {
 	while (1)
 	{
-		locker(&moni->philos->philo_mutex);
+		locker(&moni->philo_mutex);
 		if (moni->philos->philo_threads == moni->nbr_of_philos)
 		{
-			unlocker(&moni->philos->philo_mutex);
+			unlocker(&moni->philo_mutex);
 			break ;
 		}
-		unlocker(&moni->philos->philo_mutex);
+		unlocker(&moni->philo_mutex);
 	}
 }
 
@@ -76,8 +76,6 @@ void	*monitor(void *arg)
 	while (!sim_finished(moni))
 	{
 		i = 0;
-		if (moni->detach == 1)
-			return (NULL);
 		while (i < moni->nbr_of_philos && !sim_finished(moni))
 		{
 			if (philo_died(moni->philos + i) == 1 && moni->detach != 1)

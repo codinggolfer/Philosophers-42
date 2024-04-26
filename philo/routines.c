@@ -6,7 +6,7 @@
 /*   By: eagbomei <eagbomei@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:09:21 by eagbomei          #+#    #+#             */
-/*   Updated: 2024/04/25 13:46:25 by eagbomei         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:11:49 by eagbomei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static void	de_sync_philos(t_philo *philo)
 	if (philo->data->nbr_of_philos % 2 == 0)
 	{
 		if (philo->id % 2 == 0)
-			ft_usleep(30);
+			thinking(philo);
 	}
 	else
 	{
 		if (philo->id % 2)
-			thinking(philo);
+			ft_usleep(30);
 	}
 }
 
@@ -67,8 +67,6 @@ void	*main_routine(void *arg)
 			unlocker(&philo->data->data_mutex);
 			break ;
 		}
-		if (philo->data->detach == 1)
-			pthread_detach(philo->thread_id);
 		unlocker(&philo->data->data_mutex);
 		print_status(SLEEPING, philo);
 		ft_usleep(philo->data->sleep);
